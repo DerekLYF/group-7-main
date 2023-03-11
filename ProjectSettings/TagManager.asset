@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Fountain
   - Chicken
+  - Weapon
+  - Zombie
+  - tools
   layers:
   - Default
   - TransparentFX
