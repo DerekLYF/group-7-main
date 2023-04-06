@@ -26,7 +26,7 @@ public class NewBehaviourScript
         }
     }
 
-    public int MaxStamina
+    public float MaxStamina
     {
         get
         {
@@ -50,44 +50,47 @@ public class NewBehaviourScript
         }
     }
 
-    public int PauseStamina
+    public bool PauseStaminaRegen
     {
         get
         {
-            return _currentMaxStamina;
+            return _pauseStaminaRegen;
         }
         set
         {
-            _currentMaxStamina = value;
+            _pauseStaminaRegen = value;
         }
     }
     // Constructor
 
-    public unitHealth(int health, int maxHealth)
+    public unitStamina(float stamina, float maxStamina, float staminaRegenSpeed, bool pauseStaminaRegen)
     {
-        _currentHealth = health;
-        _currentMaxHealth = maxHealth;
+        float _currentStamina;
+        float _currentMaxStamina;
+        float _staminaRegenSpeed;
+        bool _pauseStaminaRegen = false;
+
+        _currentStamina = stamina;
+        _currentMaxStamina = maxStamina;
+        _staminaRegenSpeed = staminaRegenSpeed;
+        _pauseStaminaRegen = pauseStaminaRegen;
     }
 
     //Methods
 
-    public void DmgUnit(int dmgAmount)
+    public void UseStamina(float staminaAmount)
     {
-        if (_currentHealth > 0)
+        if (_currentStamina > 0)
         {
-            _currentHealth -= dmgAmount;
+            _currentStamina -= staminaAmount * Time.deltaTime;
         }
     }
 
-    public void HealUnit(int healAmount)
+    public void RegenStamina()
     {
-        if (_currentHealth < _currentMaxHealth)
+        if (_currentStamina < _currentMaxStamina && _pauseStaminaRegen)
         {
-            _currentHealth += healAmount;
-        }
-        if (currentHealth > _currentMaxHealth)
-        {
-            _currentHealth = _currentMaxHealth;
+            _currentStamina += staminaRegenSpeed * Time.deltaTime;
         }
     }
 }
