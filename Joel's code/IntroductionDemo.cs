@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class IntroductionDemo : MonoBehaviour
 {
-    // you change the name of the "yourButton" title
     public Button yourButton;
     public string sceneName;
 
@@ -13,7 +14,6 @@ public class IntroductionDemo : MonoBehaviour
         yourButton.onClick.AddListener(ChangeScene);
     }
 
-    //please insert the demo scene and replace "sceneName" name
     void ChangeScene()
     {
         SceneManager.LoadScene(sceneName);

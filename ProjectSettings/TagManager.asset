@@ -9,6 +9,8 @@ TagManager:
   - Weapon
   - Zombie
   - tools
+  - FoodTrigger
+  - PlayerTrigger
   layers:
   - Default
   - TransparentFX

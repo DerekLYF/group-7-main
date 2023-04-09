@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 public class OnCollisonEvents : MonoBehaviour
 {
     [Tooltip("If this is empty, everything will trigger the events")]
@@ -10,6 +11,8 @@ public class OnCollisonEvents : MonoBehaviour
     [SerializeField] UnityEvent<GameObject> onCollisionStay;
     [SerializeField] UnityEvent<GameObject> onCollisionExit;
 
+    private float elapsedTime = 0f;
+    private bool isPlayerStaying = false;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -26,26 +29,8 @@ public class OnCollisonEvents : MonoBehaviour
                 {
                     print(collision.collider.name + " On Collision Entered");
                     onCollisionEnter.Invoke(null);
-                }
-            }
-        }
-
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (matchTags.Count == 0)
-        {
-            print(collision.collider.name + " On Collision Staying");
-            onCollisionStay.Invoke(null);
-        }
-        else
-        {
-            for (int i = 0; i < matchTags.Count; i++)
-            {
-                if (collision.gameObject.CompareTag(matchTags[i]))
-                {
-                    print(collision.collider.name + " On Collision Staying");
-                    onCollisionStay.Invoke(null);
+                    isPlayerStaying = true;
+                    StartCoroutine(EatFood());
                 }
             }
         }
@@ -66,9 +51,25 @@ public class OnCollisonEvents : MonoBehaviour
                 {
                     print(collision.collider.name + " On Collision Exited");
                     onCollisionExit.Invoke(null);
+                    isPlayerStaying = false;
+                    elapsedTime = 0f;
                 }
             }
         }
     }
 
+    private IEnumerator EatFood()
+    {
+        while (isPlayerStaying && elapsedTime < 5f)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (isPlayerStaying)
+        {
+            print("Player has eaten the food");
+            onCollisionStay.Invoke(null);
+        }
+    }
 }
