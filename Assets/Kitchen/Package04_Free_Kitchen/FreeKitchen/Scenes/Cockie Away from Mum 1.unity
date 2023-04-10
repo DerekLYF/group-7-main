@@ -17761,7 +17761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8072a38f0d64e4c9e5ccbc590f124c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinationPoint: {fileID: 0}
+  destinationPoint: {fileID: 919132148041512717}
   walkSpeed: 1
 --- !u!195 &919132148041512721
 NavMeshAgent:
