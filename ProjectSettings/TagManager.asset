@@ -11,6 +11,7 @@ TagManager:
   - tools
   - FoodTrigger
   - PlayerTrigger
+  - Food
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class OnCollisonEvents : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class OnCollisonEvents : MonoBehaviour
     [SerializeField] UnityEvent<GameObject> onCollisionEnter;
     [SerializeField] UnityEvent<GameObject> onCollisionStay;
     [SerializeField] UnityEvent<GameObject> onCollisionExit;
+    [SerializeField] Slider progressBar;
+    [SerializeField] Text countdownText; // Manually added field
 
     private float elapsedTime = 0f;
     private bool isPlayerStaying = false;
+    private int foodEaten = 0;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -52,7 +56,10 @@ public class OnCollisonEvents : MonoBehaviour
                     print(collision.collider.name + " On Collision Exited");
                     onCollisionExit.Invoke(null);
                     isPlayerStaying = false;
-                    elapsedTime = 0f;
+                    if (countdownText != null)
+                    {
+                        countdownText.text = "5"; // Reset the countdown timer to 5 seconds
+                    }
                 }
             }
         }
@@ -60,16 +67,31 @@ public class OnCollisonEvents : MonoBehaviour
 
     private IEnumerator EatFood()
     {
-        while (isPlayerStaying && elapsedTime < 5f)
+        float remainingTime = 5f;
+        while (isPlayerStaying && remainingTime > 0f)
         {
-            elapsedTime += Time.deltaTime;
+            remainingTime -= Time.deltaTime;
+            if (countdownText != null)
+            {
+                countdownText.text =  Mathf.CeilToInt(remainingTime).ToString();
+            }
             yield return null;
         }
 
         if (isPlayerStaying)
         {
-            print("Player has eaten the food");
+            foodEaten++;
+            Debug.Log("Player has eaten " + foodEaten + " food");
             onCollisionStay.Invoke(null);
+            if (progressBar != null)
+            {
+                progressBar.maxValue = 14; // Set the maximum value of the progress bar to 14
+                progressBar.value = foodEaten; // Set the value of the progress bar to the number of food eaten
+            }
+            if (countdownText != null)
+            {
+                countdownText.text = "5";
+            }
         }
     }
 }
